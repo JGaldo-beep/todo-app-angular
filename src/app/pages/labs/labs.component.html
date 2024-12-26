@@ -1,7 +1,41 @@
-<h1>Hello world!</h1>
-<h2>I'm using a variable as my name: {{ name }}</h2>
-<ul>
-  <li *ngFor="let step of steps">
-    {{ step }}
-  </li>
-</ul>
+<div class="container">
+  <h1>Hello world!</h1>
+  <h2>I'm using a variable as my name: {{ name }}</h2>
+  <ul>
+    <li *ngFor="let step of steps">
+      {{ step }}
+    </li>
+  </ul>
+  <hr>
+
+  <h2>{{ 'Hello'.repeat(5) }}</h2>
+  <p> The sum of 3 + 3 = {{3 + 3}} </p>
+  <p>Hello my name is {{ name() }}, I'm {{ age }} year old.</p>
+  <hr>
+
+  <img [src]="img" alt="">
+  <input type="text" [value]="name()">
+  <button [disabled]="disable">Click me!</button>
+  <p>Person: {{ person.name }}</p>
+  <p>Age: {{ person.age }}</p>
+  <img [src]="person.avatar" alt="">
+  <hr>
+
+  <button (click)="handleClick()">Click me!</button>
+  <hr>
+  <button (dblclick)="handleClick()">Double click me!</button>
+  <hr>
+
+  <p>(change)</p>
+  <input type="number" [value]="person.age" (change)="handleChange($event)">
+  <p>(change)</p>
+  <input type="text" [value]="person.age" (change)="handleChange($event)">
+  <p>(keyup)</p>
+  <input type="text" [value]="person.name" (keyup)="handleKeyup($event)">
+  <p>(keydown)</p>
+  <input type="text" [value]="person.name" (keydown)="handleKeydown($event)">
+  <hr>
+
+  <h1>Signals</h1>
+  <input type="text" [value]="name()" (change)="handleChange($event)">
+</div>
