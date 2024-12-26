@@ -8,14 +8,27 @@
           placeholder="Type new todo"
           autofocus
           type="text"
+          (change)="changeHandler($event)"
         />
       </div>
     </header>
     <div class="container todoapp-wrapper">
       <!-- This section should be hidden by default and shown when there are todos -->
+       <pre>
+        <code>{{ steps() | json }}</code>
+       </pre>
       <section class="main">
         <ul class="todo-list">
-          <li class="completed">
+          <li *ngFor="let step of steps(); index as i" [class.completed]="step.completed">
+            <div class="view">
+              <input class="toggle" type="checkbox" [checked]="step.completed" (change)="updateStep(i)" />
+              <label>{{ step.title }}</label>
+              <button class="destroy" (click)="deleteStep(i)"></button>
+            </div>
+            <input class="edit" value="Buy a unicorn" />
+          </li>
+
+          <!-- <li class="completed">
             <div class="view">
               <input class="toggle" type="checkbox" checked />
               <label>Learn JavaScript</label>
@@ -38,13 +51,13 @@
               <button class="destroy"></button>
             </div>
             <input class="edit" value="Make dishes" />
-          </li>
+          </li> -->
         </ul>
       </section>
       <!-- This footer should be hidden by default and shown when there are todos -->
       <footer class="footer">
         <!-- This should be `0 items left` by default -->
-        <span class="todo-count"><strong>0</strong> item left</span>
+        <span class="todo-count"><strong>{{ steps().length }}</strong> item left</span>
         <!-- Remove this if you don't implement routing -->
         <ul class="filters">
           <li>

@@ -2,7 +2,7 @@
   <h1>Hello world!</h1>
   <h2>I'm using a variable as my name: {{ name }}</h2>
   <ul>
-    <li *ngFor="let step of steps">
+    <li *ngFor="let step of steps()">
       {{ step }}
     </li>
   </ul>
@@ -38,4 +38,13 @@
 
   <h1>Signals</h1>
   <input type="text" [value]="name()" (change)="handleChange($event)">
+  <hr>
+
+  <ul>
+    <p>total of steps: {{ steps().length }}</p>
+    <li *ngFor="let step of steps(); index as i">
+      {{ i }} {{ step }}
+    </li>
+  </ul>
+
 </div>

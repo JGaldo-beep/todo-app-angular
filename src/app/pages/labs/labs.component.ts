@@ -10,13 +10,13 @@ import { CommonModule } from '@angular/common';
 export class LabsComponent {
   name = signal('Antonio');
   age = 24;
-  steps = [
+  steps = signal([
     'Install Node.js',
     'Install Angular CLI',
     'Create new Angular project',
     'Serve the project',
     'Open the project in the browser'
-  ];
+  ]);
   disable = true;
   img = 'https://th.bing.com/th/id/OIP.07FYICs3oQnX6ziP3-PnnQHaEK?rs=1&pid=ImgDetMain';
   person = {
