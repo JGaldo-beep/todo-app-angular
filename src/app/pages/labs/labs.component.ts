@@ -1,5 +1,6 @@
 import { Component, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Person } from '../../models/person.model';
 
 @Component({
   selector: 'app-labs',
@@ -19,11 +20,11 @@ export class LabsComponent {
   ]);
   disable = true;
   img = 'https://th.bing.com/th/id/OIP.07FYICs3oQnX6ziP3-PnnQHaEK?rs=1&pid=ImgDetMain';
-  person = {
-    name: "Wallace",
-    age: 15,
-    avatar: 'https://w3schools.com/howto/img_avatar.png'
-  };
+  person = signal<Person>({
+      name: "Wallace",
+      age: 15,
+      avatar: 'https://w3schools.com/howto/img_avatar.png'
+  });
 
   handleClick() {
     alert("Hello world!");
@@ -34,6 +35,29 @@ export class LabsComponent {
     const newValue = input.value;
     this.name.set(newValue);
   };
+
+  /* Changin Person Attributes */
+  changeName(event: Event) {
+    const input = event.target as HTMLInputElement;
+    const newValue = input.value;
+    this.person.update(prevState => {
+      return {
+        ...prevState,
+        name: newValue,
+      }
+    })
+  };
+
+  changeAge(event: Event) {
+    const input = event.target as HTMLInputElement;
+    const newValue = input.value;
+    this.person.update(prevState => {
+      return {
+        ...prevState,
+        age: parseInt(newValue),
+      }
+    })
+  }
 
   handleKeyup(event: KeyboardEvent) {
     const input = event.target as HTMLInputElement;

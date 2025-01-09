@@ -48,6 +48,7 @@ export class HomeComponent {
   //   })
   // };
 
+   /* Ummutable method */
   updateStep(index: number) {
     this.steps.update((steps) => {
       return steps.map((steps, position) => {

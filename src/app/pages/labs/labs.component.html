@@ -1,6 +1,6 @@
 <div class="container">
   <h1>Hello world!</h1>
-  <h2>I'm using a variable as my name: {{ name }}</h2>
+  <h2>I'm using a variable as my name: {{ name() }}</h2>
   <ul>
     <li *ngFor="let step of steps()">
       {{ step }}
@@ -16,9 +16,9 @@
   <img [src]="img" alt="">
   <input type="text" [value]="name()">
   <button [disabled]="disable">Click me!</button>
-  <p>Person: {{ person.name }}</p>
-  <p>Age: {{ person.age }}</p>
-  <img [src]="person.avatar" alt="">
+  <p>Person: {{ person().name }}</p>
+  <p>Age: {{ person().age }}</p>
+  <img [src]="person().avatar" alt="">
   <hr>
 
   <button (click)="handleClick()">Click me!</button>
@@ -27,17 +27,18 @@
   <hr>
 
   <p>(change)</p>
-  <input type="number" [value]="person.age" (change)="handleChange($event)">
+  <input type="number" [value]="person().age" (change)="handleChange($event)">
   <p>(change)</p>
-  <input type="text" [value]="person.age" (change)="handleChange($event)">
+  <input type="text" [value]="person().age" (change)="handleChange($event)">
   <p>(keyup)</p>
-  <input type="text" [value]="person.name" (keyup)="handleKeyup($event)">
+  <input type="text" [value]="person().name" (keyup)="handleKeyup($event)">
   <p>(keydown)</p>
-  <input type="text" [value]="person.name" (keydown)="handleKeydown($event)">
+  <input type="text" [value]="person().name" (keydown)="handleKeydown($event)">
   <hr>
 
   <h1>Signals</h1>
-  <input type="text" [value]="name()" (change)="handleChange($event)">
+  <input type="text" [value]="person().name" (change)="changeName($event)">
+  <input type="text" [value]="person().age" (change)="changeAge($event)">
   <hr>
 
   <ul>
@@ -46,5 +47,20 @@
       {{ i }} {{ step }}
     </li>
   </ul>
+  <hr>
 
+  <div *ngIf="1 == 1">
+    My content - Learning NgIF
+  </div>
+
+  <div *ngIf="name() !== 'Juanito'">
+    Your name is not {{ "Juanito" }}
+  </div>
+
+  <div *ngIf="person().name === 'Wallace' && person().age < 16; else elseBlock">
+    What's going on! My name is {{ person().name }}, I'm {{ name() }}'s brother.
+  </div>
+  <ng-template #elseBlock>
+    Hey dude! My age is not correct!
+  </ng-template>
 </div>
