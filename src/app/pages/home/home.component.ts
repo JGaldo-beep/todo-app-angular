@@ -137,13 +137,6 @@ export class HomeComponent {
   }
 
   changeFilter(filter: 'all' | 'pending' | 'completed') {
-    const steps = this.steps();
-    if (filter === 'pending' && steps.filter(step => !step.completed).length === 0) {
-      alert("You don't have Task Pending");
-    } else if (filter === 'completed' && steps.filter(step => step.completed).length === 0) {
-      alert("You don't have Task Completed");
-    } else {
-      this.filter.set(filter);
-    }
+    this.filter.set(filter);
   }
 }
