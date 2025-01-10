@@ -1,31 +1,64 @@
-import { Component, signal } from '@angular/core';
+import { Component, computed, signal, effect, inject, Injector } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Step } from '../../models/step.model';
+import { FormControl, NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-home',
-  imports: [CommonModule],
+  imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
 export class HomeComponent {
-  steps = signal<Step[]>([
-    {
-      id: Date.now(),
-      title: "Create proyect",
-      completed: false
-    },
-    {
-      id: Date.now(),
-      title: "Create components",
-      completed: false
-    }
-  ]);
+  steps = signal<Step[]>([]);
 
-  changeHandler(event: Event) {
-    const input = event.target as HTMLInputElement;
-    const newStep = input.value;
-    this.addStep(newStep);
+  filter = signal<'all' | 'pending' | 'completed'>('all');
+  stepByFilter = computed(() => {
+    const filter = this.filter();
+    const steps = this.steps();
+    if (filter === 'pending') {
+      return steps.filter(step => !step.completed);
+    }
+    if (filter === 'completed') {
+      return steps.filter(step => step.completed);
+    }
+    return steps;
+  })
+
+  newStepCtrl = new FormControl('', {
+    nonNullable: true,
+    validators: [
+      Validators.required,
+    ],
+  });
+
+  injector = inject(Injector);
+  
+  ngOnInit() {
+    const storage = localStorage.getItem('steps');
+    if (storage) {
+      const steps = JSON.parse(storage);
+      this.steps.set(steps);
+    };
+  };
+
+  trackSteps() {
+    effect(() => {
+      const steps = this.steps();
+      console.log(steps);
+      localStorage.setItem('steps', JSON.stringify(steps));
+    }, { injector: this.injector });
+  };
+
+  // if (this.newStepCtrl.valid && !this.newStepCtrl.value.startsWith(' ')) { 
+  changeHandler() {
+    if (this.newStepCtrl.valid) {
+      const value = this.newStepCtrl.value.trim();
+      if (value != '') {
+        this.addStep(value);
+        this.newStepCtrl.setValue("");
+      }
+    }
   };
 
   addStep(title: string) {
@@ -61,5 +94,43 @@ export class HomeComponent {
         return steps;
       });
     });
+  }
+
+  updateStepEditingMode(index: number) {
+    this.steps.update(prevState => {
+      return prevState.map((step, position) => {
+        if (position == index) {
+          return {
+            ...step,
+            editing: true
+          }
+        }
+        return {
+          ...step,
+          editing: false
+        };
+      })
+    })
+  }
+
+  updateStepText(index: number, event: Event) {
+    const input = event.target as HTMLInputElement;
+    const newValue = input.value;
+    this.steps.update(prevState => {
+      return prevState.map((step, position) => {
+        if (position == index) {
+          return {
+            ...step,
+            title: newValue,
+            editing: false
+          }
+        }
+        return step;
+      })
+    })
+  }
+
+  changeFilter(filter: 'all' | 'pending' | 'completed') {
+    this.filter.set(filter);
   }
 }
