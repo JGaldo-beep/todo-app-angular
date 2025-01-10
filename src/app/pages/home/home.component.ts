@@ -33,13 +33,14 @@ export class HomeComponent {
   });
 
   injector = inject(Injector);
-  
+
   ngOnInit() {
     const storage = localStorage.getItem('steps');
     if (storage) {
       const steps = JSON.parse(storage);
       this.steps.set(steps);
     };
+    this.trackSteps();
   };
 
   trackSteps() {
