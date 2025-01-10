@@ -1,7 +1,7 @@
 import { Component, computed, signal, effect, inject, Injector } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Step } from '../../models/step.model';
-import { FormControl, NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-home',
@@ -13,6 +13,7 @@ export class HomeComponent {
   steps = signal<Step[]>([]);
 
   filter = signal<'all' | 'pending' | 'completed'>('all');
+
   stepByFilter = computed(() => {
     const filter = this.filter();
     const steps = this.steps();
@@ -75,6 +76,10 @@ export class HomeComponent {
     this.steps.update((steps) => steps.filter((step, position) => position !== index));
   };
 
+  deleteStepsCompleted() {
+    this.steps.update((steps) => steps.filter((step) => !step.completed));
+  };
+
   // checkedHandler(index: number) {
   //   this.steps.update((steps) => {
   //     steps[index].completed = !steps[index].completed;
@@ -132,6 +137,13 @@ export class HomeComponent {
   }
 
   changeFilter(filter: 'all' | 'pending' | 'completed') {
-    this.filter.set(filter);
+    const steps = this.steps();
+    if (filter === 'pending' && steps.filter(step => !step.completed).length === 0) {
+      alert("You don't have Task Pending");
+    } else if (filter === 'completed' && steps.filter(step => step.completed).length === 0) {
+      alert("You don't have Task Completed");
+    } else {
+      this.filter.set(filter);
+    }
   }
 }
