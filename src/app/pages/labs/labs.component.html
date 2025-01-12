@@ -6,100 +6,125 @@
       {{ step }}
     </li>
   </ul>
-  <hr>
 
-  <h2>{{ 'Hello'.repeat(5) }}</h2>
-  <p> The sum of 3 + 3 = {{3 + 3}} </p>
+  <h2>New sintax FOR</h2>
+  <ul>
+    @for (step of steps(); track step; let i = $index) {
+    <li>{{ i }} {{ step }}</li>
+    } @empty {
+    <li>No steps</li>
+    }
+  </ul>
+  <hr />
+
+  <h2>{{ "Hello".repeat(5) }}</h2>
+  <p>The sum of 3 + 3 = {{ 3 + 3 }}</p>
   <p>Hello my name is {{ name() }}, I'm {{ age }} year old.</p>
-  <hr>
+  <hr />
 
-  <img [src]="img" alt="">
-  <input type="text" [value]="name()">
+  <img [src]="img" alt="" />
+  <input type="text" [value]="name()" (change)="handleChange($event)" />
   <button [disabled]="disable">Click me!</button>
   <p>Person: {{ person().name }}</p>
   <p>Age: {{ person().age }}</p>
-  <img [src]="person().avatar" alt="">
-  <hr>
+  <img [src]="person().avatar" alt="" />
+  <hr />
 
   <button (click)="handleClick()">Click me!</button>
-  <hr>
+  <hr />
   <button (dblclick)="handleClick()">Double click me!</button>
-  <hr>
+  <hr />
 
   <p>(change)</p>
-  <input type="number" [value]="person().age" (change)="handleChange($event)">
+  <input type="number" [value]="person().age" (change)="handleChange($event)" />
   <p>(change)</p>
-  <input type="text" [value]="person().age" (change)="handleChange($event)">
+  <input type="text" [value]="person().age" (change)="handleChange($event)" />
   <p>(keyup)</p>
-  <input type="text" [value]="person().name" (keyup)="handleKeyup($event)">
+  <input type="text" [value]="person().name" (keyup)="handleKeyup($event)" />
   <p>(keydown)</p>
-  <input type="text" [value]="person().name" (keydown)="handleKeydown($event)">
-  <hr>
+  <input
+    type="text"
+    [value]="person().name"
+    (keydown)="handleKeydown($event)"
+  />
+  <hr />
 
   <h1>Signals</h1>
-  <input type="text" [value]="person().name" (change)="changeName($event)">
-  <input type="text" [value]="person().age" (change)="changeAge($event)">
-  <hr>
+  <input type="text" [value]="person().name" (change)="changeName($event)" />
+  <input type="text" [value]="person().age" (change)="changeAge($event)" />
+  <hr />
 
   <ul>
     <p>total of steps: {{ steps().length }}</p>
-    <li *ngFor="let step of steps(); index as i">
-      {{ i }} {{ step }}
-    </li>
+    <li *ngFor="let step of steps(); index as i">{{ i }} {{ step }}</li>
   </ul>
-  <hr>
+  <hr />
 
-  <div *ngIf="1 == 1">
-    My content - Learning NgIF
-  </div>
+  <div *ngIf="1 == 1">My content - Learning NgIF</div>
 
-  <div *ngIf="name() !== 'Juanito'">
-    Your name is not {{ "Juanito" }}
-  </div>
+  <!-- New Sintaxis in Angular -->
+  @if (name() === "Antonio") {
+  <h1>My name is Antonio</h1>
+  } @else {
+  <h1>My name is not Antonio</h1>
+  }
+
+  <div *ngIf="name() !== 'Juanito'">Your name is not {{ "Juanito" }}</div>
 
   <div *ngIf="person().name === 'Wallace' && person().age < 16; else elseBlock">
     What's going on! My name is {{ person().name }}, I'm {{ name() }}'s brother.
   </div>
-  <ng-template #elseBlock>
-    Hey dude! My age is not correct!
-  </ng-template>
-  <hr>
+  <ng-template #elseBlock> Hey dude! My age is not correct! </ng-template>
+  <hr />
 
   <!-- Learning Ng Switch -->
   <div [ngSwitch]="person().name">
-    <p *ngSwitchCase="'Wallace'">
-      I'm Wallace
-    </p>
-    <p *ngSwitchCase="'Antonio'">
-      I'm Antonio, what's up?
-    </p>
-    <p *ngSwitchCase="'Monica'">
-      I'm your mother, what's popping?
-    </p>
-    <p *ngSwitchDefault>
-      Hey! You chose other name, go back!
-    </p>
+    <p *ngSwitchCase="'Wallace'">I'm Wallace</p>
+    <p *ngSwitchCase="'Antonio'">I'm Antonio, what's up?</p>
+    <p *ngSwitchCase="'Monica'">I'm your mother, what's popping?</p>
+    <p *ngSwitchDefault>Hey! You chose other name, go back!</p>
   </div>
-  <hr>
 
-  <input type="color" [formControl]="colorCtrl">
+  <!-- New Switch -->
+  @switch(person().name) { @case('Wallace') {
+  <p>I'm Wallace</p>
+  } @case('Antonio') {
+  <p>I'm Antonio, what's up?</p>
+  } @case('Monica') {
+  <p>I'm your mother, what's popping?</p>
+  } @default {
+  <p>Hey! You chose other name, go back!</p>
+  } }
+  <hr />
+
+  <input type="color" [formControl]="colorCtrl" />
   <p>color: {{ colorCtrl.value }}</p>
   <svg>
     <g>
-      <rect x="0" y="0" height="100" width="100" [attr.fill]="colorCtrl.value" />
+      <rect
+        x="0"
+        y="0"
+        height="100"
+        width="100"
+        [attr.fill]="colorCtrl.value"
+      />
     </g>
   </svg>
-  <hr>
+  <hr />
 
-  <input type="number" [formControl]="widthCtrl">
+  <input type="number" [formControl]="widthCtrl" />
   <span class="box" [style.width.px]="widthCtrl.value"></span>
-  <hr>
+  <hr />
 
   <p>
-    <input type="text" [formControl]="nameCtrl"> <br />
-    <span class="message-error" [class.show] ="nameCtrl.invalid && nameCtrl.touched">Name invalid</span>
+    <input type="text" [formControl]="nameCtrl" /> <br />
+    <span
+      class="message-error"
+      [class.show]="nameCtrl.invalid && nameCtrl.touched"
+      >Name invalid</span
+    >
   </p>
   <p>
-    <input type="text">
+    <input type="text" />
   </p>
 </div>
